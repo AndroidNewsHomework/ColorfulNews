@@ -28,25 +28,8 @@ public class SystemUiVisibilityUtil {
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // 隐藏虚拟按键(导航栏)
             | View.SYSTEM_UI_FLAG_FULLSCREEN; // Activity全屏显示，且状态栏被隐藏覆盖掉
 
-    public static void exit(Activity activity) {
-        if (Build.VERSION.SDK_INT >= 19) {
-            addFlags(activity.getWindow().getDecorView(), FLAG_IMMERSIVE);
-        }
-    }
-
     public static void addFlags(View decorView, int flags) {
         decorView.setSystemUiVisibility(decorView.getSystemUiVisibility() | flags);
-    }
-
-    public static void enter(Activity activity) {
-        if (Build.VERSION.SDK_INT >= 19) {
-            clearFlags(activity.getWindow().getDecorView(), FLAG_IMMERSIVE);
-        }
-    }
-
-    public static void clearFlags(View view, int flags) {
-        view.setSystemUiVisibility(view.getSystemUiVisibility() & ~flags);
-        // & ~flags 清除view.getSystemUiVisibility()中的flags
     }
 
 }

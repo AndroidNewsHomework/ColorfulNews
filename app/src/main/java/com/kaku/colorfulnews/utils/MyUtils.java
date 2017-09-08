@@ -58,6 +58,20 @@ public class MyUtils {
         editor.apply();
     }
 
+    public static boolean isNoPhotoMode() {
+        SharedPreferences preferences = App.getAppContext().getSharedPreferences(
+                Constants.SHARES_COLOURFUL_NEWS, Activity.MODE_PRIVATE);
+        return preferences.getBoolean(Constants.NO_PHOTO_MODE, false);
+    }
+
+    public static void saveNoPhoto(boolean noPhoto) {
+        SharedPreferences preferences = App.getAppContext().getSharedPreferences(
+                Constants.SHARES_COLOURFUL_NEWS, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(Constants.NO_PHOTO_MODE, noPhoto);
+        editor.apply();
+    }
+
     public static SharedPreferences getSharedPreferences() {
         return App.getAppContext()
                 .getSharedPreferences(Constants.SHARES_COLOURFUL_NEWS, Context.MODE_PRIVATE);

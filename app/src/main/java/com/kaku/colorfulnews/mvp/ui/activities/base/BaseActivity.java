@@ -36,7 +36,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import com.kaku.colorfulnews.App;
 import com.kaku.colorfulnews.R;
@@ -48,8 +47,6 @@ import com.kaku.colorfulnews.mvp.presenter.base.BasePresenter;
 import com.kaku.colorfulnews.mvp.ui.activities.AboutActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.NewsActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.NewsDetailActivity;
-import com.kaku.colorfulnews.mvp.ui.activities.PhotoActivity;
-import com.kaku.colorfulnews.mvp.ui.activities.PhotoDetailActivity;
 import com.kaku.colorfulnews.utils.MyUtils;
 import com.kaku.colorfulnews.utils.NetUtil;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
@@ -112,6 +109,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         }
 
         initNightModeSwitch();
+        initNoPhotoModeSwitch();
     }
 
     private void initAnnotation() {
@@ -122,13 +120,45 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     private void initNightModeSwitch() {
-        if (this instanceof NewsActivity || this instanceof PhotoActivity) {
+        if (this instanceof NewsActivity) {
             MenuItem menuNightMode = mBaseNavView.getMenu().findItem(R.id.nav_night_mode);
             SwitchCompat dayNightSwitch = (SwitchCompat) MenuItemCompat
                     .getActionView(menuNightMode);
             setCheckedState(dayNightSwitch);
             setCheckedEvent(dayNightSwitch);
         }
+    }
+
+    private void initNoPhotoModeSwitch() {
+        if (this instanceof NewsActivity) {
+            MenuItem menuNoPhotoMode = mBaseNavView.getMenu().findItem(R.id.no_photo_mode);
+            SwitchCompat noPhotoSwitch = (SwitchCompat) MenuItemCompat.getActionView(menuNoPhotoMode);
+            setNoPhotoState(noPhotoSwitch);
+            setNoPhotoEvent(noPhotoSwitch);
+        }
+    }
+
+    private void setNoPhotoState(SwitchCompat noPhotoSwitch) {
+        if (MyUtils.isNoPhotoMode()) {
+            noPhotoSwitch.setChecked(true);
+        } else {
+            noPhotoSwitch.setChecked(false);
+        }
+    }
+
+    private void setNoPhotoEvent(SwitchCompat noPhotoSwitch) {
+        noPhotoSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    MyUtils.saveNoPhoto(true);
+                } else {
+                    MyUtils.saveNoPhoto(false);
+                }
+                mIsChangeTheme = true;
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
     }
 
     private void setCheckedState(SwitchCompat dayNightSwitch) {
@@ -186,16 +216,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                 @Override
                 public boolean onNavigationItemSelected(MenuItem item) {
                     switch (item.getItemId()) {
-                        case R.id.nav_news:
-                            mClass = NewsActivity.class;
-                            break;
-                        case R.id.nav_photo:
-                            mClass = PhotoActivity.class;
-                            break;
-                        case R.id.nav_video:
-                            Toast.makeText(BaseActivity.this, "施工准备中...", Toast.LENGTH_SHORT).show();
-                            break;
                         case R.id.nav_night_mode:
+                            break;
+                        case R.id.no_photo_mode:
                             break;
                     }
                     mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -250,8 +273,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @TargetApi(Build.VERSION_CODES.KITKAT)
     protected void setStatusBarTranslucent() {
         if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT &&
-                !(this instanceof NewsDetailActivity || this instanceof PhotoActivity
-                        || this instanceof PhotoDetailActivity))
+                !(this instanceof NewsDetailActivity))
                 || (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT
                 && this instanceof NewsDetailActivity)) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

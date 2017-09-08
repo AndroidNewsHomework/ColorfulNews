@@ -41,17 +41,14 @@ import com.kaku.colorfulnews.common.Constants;
 import com.kaku.colorfulnews.common.LoadNewsType;
 import com.kaku.colorfulnews.event.ScrollToTopEvent;
 import com.kaku.colorfulnews.mvp.entity.NewsSummary;
-import com.kaku.colorfulnews.mvp.entity.NewsPhotoDetail;
 import com.kaku.colorfulnews.mvp.presenter.impl.NewsListPresenterImpl;
 import com.kaku.colorfulnews.mvp.ui.activities.NewsDetailActivity;
-import com.kaku.colorfulnews.mvp.ui.activities.NewsPhotoDetailActivity;
 import com.kaku.colorfulnews.mvp.ui.adapter.NewsListAdapter;
 import com.kaku.colorfulnews.mvp.ui.fragment.base.BaseFragment;
 import com.kaku.colorfulnews.mvp.view.NewsListView;
 import com.kaku.colorfulnews.utils.NetUtil;
 import com.kaku.colorfulnews.utils.RxBus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -249,53 +246,9 @@ public class NewsListFragment extends BaseFragment implements NewsListView, News
     @Override
     public void onItemClick(View view, int position, boolean isPhoto) {
         if (isPhoto) {
-            NewsPhotoDetail newsPhotoDetail = getPhotoDetail(position);
-            goToPhotoDetailActivity(newsPhotoDetail);
         } else {
             goToNewsDetailActivity(view, position);
         }
-    }
-
-    private NewsPhotoDetail getPhotoDetail(int position) {
-        NewsSummary newsSummary = mNewsListAdapter.getList().get(position);
-        NewsPhotoDetail newsPhotoDetail = new NewsPhotoDetail();
-        newsPhotoDetail.setTitle(newsSummary.getTitle());
-        setPictures(newsSummary, newsPhotoDetail);
-        return newsPhotoDetail;
-    }
-
-    private void setPictures(NewsSummary newsSummary, NewsPhotoDetail newsPhotoDetail) {
-        List<NewsPhotoDetail.Picture> pictureList = new ArrayList<>();
-
-        if (newsSummary.getAds() != null) {
-            for (NewsSummary.AdsBean entity : newsSummary.getAds()) {
-                setValuesAndAddToList(pictureList, entity.getTitle(), entity.getImgsrc());
-            }
-        } else if (newsSummary.getImgextra() != null) {
-            for (NewsSummary.ImgextraBean entity : newsSummary.getImgextra()) {
-                setValuesAndAddToList(pictureList, null, entity.getImgsrc());
-            }
-        } else {
-            setValuesAndAddToList(pictureList, null, newsSummary.getImgsrc());
-        }
-
-        newsPhotoDetail.setPictures(pictureList);
-    }
-
-    private void setValuesAndAddToList(List<NewsPhotoDetail.Picture> pictureList, String title, String imgsrc) {
-        NewsPhotoDetail.Picture picture = new NewsPhotoDetail.Picture();
-        if (title != null) {
-            picture.setTitle(title);
-        }
-        picture.setImgSrc(imgsrc);
-
-        pictureList.add(picture);
-    }
-
-    private void goToPhotoDetailActivity(NewsPhotoDetail newsPhotoDetail) {
-        Intent intent = new Intent(getActivity(), NewsPhotoDetailActivity.class);
-        intent.putExtra(Constants.PHOTO_DETAIL, newsPhotoDetail);
-        startActivity(intent);
     }
 
     private void goToNewsDetailActivity(View view, int position) {
