@@ -22,7 +22,6 @@ import android.util.SparseArray;
 import com.kaku.colorfulnews.App;
 import com.kaku.colorfulnews.common.ApiConstants;
 import com.kaku.colorfulnews.common.HostType;
-import com.kaku.colorfulnews.mvp.entity.GirlData;
 import com.kaku.colorfulnews.mvp.entity.NewsDetail;
 import com.kaku.colorfulnews.mvp.entity.NewsSummary;
 import com.kaku.colorfulnews.utils.NetUtil;
@@ -192,7 +191,4 @@ public class RetrofitManager {
         return mNewsService.getNewsBodyHtmlPhoto(photoPath);
     }
 
-    public Observable<GirlData> getPhotoListObservable(int size, int page) {
-        return mNewsService.getPhotoList(size, page);
-    }
 }

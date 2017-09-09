@@ -9,7 +9,6 @@
     tools:context=".mvp.ui.activities.AboutActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
@@ -17,7 +16,6 @@
         tools:paddingTop="25dp">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="?colorPrimary"
@@ -26,7 +24,6 @@
             app:titleEnabled="false">
 
             <RelativeLayout
-                android:id="@+id/hero"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
@@ -56,7 +53,6 @@
                     android:textSize="@dimen/big_medium"/>
 
                 <TextView
-                    android:id="@+id/version"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/app_name"
