@@ -17,6 +17,8 @@
 package com.kaku.colorfulnews.mvp.entity;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author 咖枯
@@ -30,6 +32,16 @@ public class NewsSummary {
     private String source;
     private String imgsrc;
     private String ptime;
+    static private Set<String> clickedIDs = new TreeSet<String>();
+
+    public boolean isClicked() {
+        return clickedIDs.contains(postid);
+    }
+
+    public void setClicked(boolean clicked) {
+        clickedIDs.add(postid);
+    }
+
     /**
      * title : "悬崖村" 孩子上学需爬800米悬崖
      * tag : photoset
