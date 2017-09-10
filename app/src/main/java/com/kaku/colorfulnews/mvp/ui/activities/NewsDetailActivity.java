@@ -48,6 +48,7 @@ import com.kaku.colorfulnews.mvp.ui.activities.base.BaseActivity;
 import com.kaku.colorfulnews.mvp.view.NewsDetailView;
 import com.kaku.colorfulnews.utils.MyUtils;
 import com.kaku.colorfulnews.utils.NetUtil;
+import com.kaku.colorfulnews.utils.SpeechUtil;
 import com.kaku.colorfulnews.utils.TransformUtils;
 import com.socks.library.KLog;
 
@@ -86,6 +87,8 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     ProgressBar mProgressBar;
     @BindView(R.id.mask_view)
     View mMaskView;
+
+    SpeechUtil mySpeech = new SpeechUtil(App.getAppContext());
 
     @Inject
     NewsDetailPresenterImpl mNewsDetailPresenter;
@@ -239,8 +242,16 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
             case R.id.action_browser:
                 openByBrowser();
                 break;
+            case R.id.action_speech:
+                doSpeech();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void doSpeech() {
+        String t = mNewsDetailBodyTv.getText().toString();
+        mySpeech.startSpeak(t);
     }
 
     private void openByWebView() {
@@ -266,8 +277,9 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
 
     @Override
     protected void onDestroy() {
+        mySpeech.stopSpeak();
+        cancelUrlImageGetterSubscription();
         super.onDestroy();
-
     }
 
     @OnClick(R.id.fab)
