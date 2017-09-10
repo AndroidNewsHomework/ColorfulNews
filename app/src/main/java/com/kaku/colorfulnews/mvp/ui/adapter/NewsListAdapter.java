@@ -16,6 +16,7 @@
  */
 package com.kaku.colorfulnews.mvp.ui.adapter;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -76,7 +77,12 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary> {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((OnNewsListItemClickListener) mOnItemClickListener).onItemClick(v, holder.getLayoutPosition(), isPhoto);
+                    int position = holder.getLayoutPosition();
+                    mList.get(position).setClicked(true);
+                    if (holder instanceof ItemViewHolder) {
+                        setClicked((ItemViewHolder) holder);
+                    }
+                    ((OnNewsListItemClickListener) mOnItemClickListener).onItemClick(v, position, isPhoto);
                 }
             });
         }
@@ -118,6 +124,10 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary> {
         holder.mNewsSummaryPtimeTv.setText(ptime);
         holder.mNewsSummaryDigestTv.setText(digest);
 
+        if (newsSummary.isClicked()) {
+            setClicked(holder);
+        }
+
         Glide.with(App.getAppContext()).load(imgSrc).asBitmap() // gif格式有时会导致整体图片不显示，貌似有冲突
                 .format(DecodeFormat.PREFER_ARGB_8888)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -137,6 +147,12 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary> {
     private boolean isShowingAnimation(RecyclerView.ViewHolder holder) {
         return holder.itemView.getAnimation() != null && holder.itemView
                 .getAnimation().hasStarted();
+    }
+
+    private void setClicked(ItemViewHolder holder) {
+        holder.mNewsSummaryTitleTv.setTextColor(Color.GRAY);
+        holder.mNewsSummaryPtimeTv.setTextColor(Color.GRAY);
+        holder.mNewsSummaryDigestTv.setTextColor(Color.GRAY);
     }
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
