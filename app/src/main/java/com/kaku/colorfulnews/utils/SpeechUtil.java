@@ -19,16 +19,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
-/*
-public class SpeechUtil {
-    private SpeechUtilCore instance;
-    private SpeechUtil(Context context) {
-        instance = new SpeechUtilCore(context);
-    }
-    public SpeechUtilCore getInstance() {
-        return instance;
-    }
-}*/
 
 public class SpeechUtil {
     private String TAG = "SpeechUtil";
@@ -121,6 +111,10 @@ public class SpeechUtil {
      */
     public int startSpeak(int resId) {
         return startSpeak(context.getString(resId));
+    }
+
+    public void stopSpeak() {
+        mSpeechSynthesizer.stopSpeaking();
     }
 
     /**
