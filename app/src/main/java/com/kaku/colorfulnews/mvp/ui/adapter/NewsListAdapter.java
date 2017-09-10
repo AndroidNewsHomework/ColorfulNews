@@ -91,7 +91,6 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary> {
 
     @Override
     public int getItemViewType(int position) {
-        Log.e("NewsListAdapter", "getItemViewType" + position + mList.size());
         if (mIsShowFooter && isFooterPosition(position)) {
             return TYPE_FOOTER;
         } else if (!TextUtils.isEmpty(mList.get(position).getDigest())) {

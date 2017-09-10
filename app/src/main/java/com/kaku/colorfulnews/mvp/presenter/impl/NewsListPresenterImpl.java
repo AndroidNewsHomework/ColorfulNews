@@ -78,7 +78,7 @@ public class NewsListPresenterImpl extends BasePresenterImpl<NewsListView, List<
         Log.e("NewsListPresenterImpl", "items " + items.size());
         misFirstLoad = true;
         if (items != null) {
-            mStartPage += 20;
+            mStartPage += 1;
         }
 
         int loadType = mIsRefresh ? LoadNewsType.TYPE_REFRESH_SUCCESS : LoadNewsType.TYPE_LOAD_MORE_SUCCESS;

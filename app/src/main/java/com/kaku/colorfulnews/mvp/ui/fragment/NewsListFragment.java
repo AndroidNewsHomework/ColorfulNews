@@ -65,7 +65,9 @@ import static android.support.v7.widget.RecyclerView.OnScrollListener;
  * @author 咖枯
  * @version 1.0 2016/5/18
  */
-public class NewsListFragment extends BaseFragment implements NewsListView, NewsListAdapter.OnNewsListItemClickListener,
+public class NewsListFragment extends BaseFragment implements
+        NewsListView,
+        NewsListAdapter.OnNewsListItemClickListener,
         SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.news_rv)
     RecyclerView mNewsRV;
@@ -194,7 +196,6 @@ public class NewsListFragment extends BaseFragment implements NewsListView, News
         switch (loadType) {
             case LoadNewsType.TYPE_REFRESH_SUCCESS:
                 mSwipeRefreshLayout.setRefreshing(false);
-                Log.e("NewsListFragment", "newssummary: " + newsSummary.size());
                 mNewsListAdapter.setList(newsSummary);
                 mNewsListAdapter.notifyDataSetChanged();
                 checkIsEmpty(newsSummary);
@@ -204,6 +205,7 @@ public class NewsListFragment extends BaseFragment implements NewsListView, News
                 checkIsEmpty(newsSummary);
                 break;
             case LoadNewsType.TYPE_LOAD_MORE_SUCCESS:
+                Log.e("NewsListFragment", "LOAD MORE SUCCESS");
                 mNewsListAdapter.hideFooter();
                 if (newsSummary == null || newsSummary.size() == 0) {
                     mIsAllLoaded = true;
