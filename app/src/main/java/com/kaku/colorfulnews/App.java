@@ -38,6 +38,10 @@ import com.squareup.leakcanary.RefWatcher;
 
 import de.greenrobot.dao.query.QueryBuilder;
 
+import com.kaku.colorfulnews.utils.SpeechUtil;
+import com.iflytek.cloud.Setting;
+import com.iflytek.cloud.SpeechUtility;
+
 /**
  * @author 咖枯
  * @version 1.0 2016/05/20
@@ -63,11 +67,11 @@ public class App extends Application {
         initActivityLifecycleLogs();
         initStrictMode();
         initDayNightMode();
+        initSpeech();
         KLog.init(BuildConfig.LOG_DEBUG);
         // 官方推荐将获取 DaoMaster 对象的方法放到 Application 层，这样将避免多次创建生成 Session 对象
         setupDatabase();
         initApplicationComponent();
-
     }
 
     private void initLeakCanary() {
@@ -138,6 +142,12 @@ public class App extends Application {
                             .penaltyLog()
                             .build());
         }
+    }
+
+    private void initSpeech() {
+        SpeechUtil mySpeech = new SpeechUtil(App.this);
+        int code = mySpeech.startSpeak("欢迎使用多彩资讯，张天扬好帅啊");
+        KLog.d("mySpeech start code:", code+"");
     }
 
     private void initDayNightMode() {
