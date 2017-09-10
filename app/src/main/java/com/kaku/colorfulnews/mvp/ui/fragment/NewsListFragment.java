@@ -31,6 +31,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -64,7 +65,9 @@ import static android.support.v7.widget.RecyclerView.OnScrollListener;
  * @author 咖枯
  * @version 1.0 2016/5/18
  */
-public class NewsListFragment extends BaseFragment implements NewsListView, NewsListAdapter.OnNewsListItemClickListener,
+public class NewsListFragment extends BaseFragment implements
+        NewsListView,
+        NewsListAdapter.OnNewsListItemClickListener,
         SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.news_rv)
     RecyclerView mNewsRV;
@@ -202,6 +205,7 @@ public class NewsListFragment extends BaseFragment implements NewsListView, News
                 checkIsEmpty(newsSummary);
                 break;
             case LoadNewsType.TYPE_LOAD_MORE_SUCCESS:
+                Log.e("NewsListFragment", "LOAD MORE SUCCESS");
                 mNewsListAdapter.hideFooter();
                 if (newsSummary == null || newsSummary.size() == 0) {
                     mIsAllLoaded = true;

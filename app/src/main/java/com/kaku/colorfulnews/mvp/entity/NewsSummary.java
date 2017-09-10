@@ -16,7 +16,6 @@
  */
 package com.kaku.colorfulnews.mvp.entity;
 
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -34,12 +33,20 @@ public class NewsSummary {
     private String ptime;
     static private Set<String> clickedIDs = new TreeSet<String>();
 
+    public static Set<String> getClickedIDs() {
+        return clickedIDs;
+    }
+
+    public static void setClickedIDs(Set<String> clickedIDs) {
+        NewsSummary.clickedIDs = clickedIDs;
+    }
+
     public boolean isClicked() {
-        return clickedIDs.contains(postid);
+        return getClickedIDs().contains(getPostid());
     }
 
     public void setClicked(boolean clicked) {
-        clickedIDs.add(postid);
+        getClickedIDs().add(getPostid());
     }
 
     /**
@@ -90,4 +97,19 @@ public class NewsSummary {
         this.ptime = ptime;
     }
 
+    public void setPostid(String postid) {
+        this.postid = postid;
+    }
+
+    public void setDigest(String digest) {
+        this.digest = digest;
+    }
+
+    public void setLtitle(String ltitle) {
+        this.ltitle = ltitle;
+    }
+
+    public void setImgsrc(String imgsrc) {
+        this.imgsrc = imgsrc;
+    }
 }
