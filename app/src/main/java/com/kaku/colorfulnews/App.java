@@ -146,7 +146,7 @@ public class App extends Application {
 
     private void initSpeech() {
         SpeechUtil mySpeech = new SpeechUtil(App.this);
-        int code = mySpeech.startSpeak("欢迎使用多彩资讯，张天扬好帅啊");
+        int code = mySpeech.startSpeak("欢迎使用多彩资讯");
         KLog.d("mySpeech start code:", code+"");
     }
 

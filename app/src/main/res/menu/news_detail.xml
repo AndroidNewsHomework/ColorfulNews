@@ -11,4 +11,9 @@
         android:orderInCategory="200"
         android:title="@string/browser"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_speech"
+        android:orderInCategory="300"
+        android:title="@string/speech"
+        app:showAsAction="never" />
 </menu>

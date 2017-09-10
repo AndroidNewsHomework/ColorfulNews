@@ -97,7 +97,7 @@ public class SpeechUtil {
      */
     public int startSpeak(String content) {
 //      setParams();
-        toastMessage("content");
+        //toastMessage("content");
         int result = mSpeechSynthesizer.startSpeaking(content, mTtsListener);
         if(result != ErrorCode.SUCCESS) {
             toastMessage("语音合成失败,错误码: " + result);
@@ -172,7 +172,7 @@ public class SpeechUtil {
             if (error == null) { //播放完成
 
             } else {
-                toastMessage("code=" + error.getErrorCode() + ",msg=" + error.getErrorDescription());
+                toastMessage(error.getErrorDescription());
             }
         }
 
