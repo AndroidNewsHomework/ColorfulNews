@@ -72,18 +72,6 @@ public class NewsListInteractorImpl implements NewsListInteractor<List<NewsSumma
                     public NewsSummary call(BriefNewsRaw bnr) {
                         return bnr.toNewsSummary();
                     }
-                }).map(new Func1<NewsSummary, NewsSummary>() {
-                    @Override
-                    public NewsSummary call(NewsSummary ns) {
-                        Log.e("NewsListInteractorImpl", "TIT: " + ns.getTitle());
-                        Log.e("NewsListInteractorImpl", "DIG: " + ns.getDigest());
-                        Log.e("NewsListInteractorImpl", "IMG: " + ns.getImgsrc());
-                        Log.e("NewsListInteractorImpl", "LTI: " + ns.getLtitle());
-                        Log.e("NewsListInteractorImpl", "NID: " + ns.getPostid());
-                        Log.e("NewsListInteractorImpl", "TIM: " + ns.getPtime());
-                        Log.e("NewsListInteractorImpl", "SRC: " + ns.getSource());
-                        return ns;
-                    }
                 })
 //                .toList()
                 .distinct()

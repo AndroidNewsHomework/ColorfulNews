@@ -88,7 +88,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     @BindView(R.id.mask_view)
     View mMaskView;
 
-    SpeechUtil mySpeech = new SpeechUtil(App.getAppContext());
+//    SpeechUtil mySpeech = new SpeechUtil(App.getAppContext());
 
     @Inject
     NewsDetailPresenterImpl mNewsDetailPresenter;
@@ -250,8 +250,8 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     }
 
     private void doSpeech() {
-        String t = mNewsDetailBodyTv.getText().toString();
-        mySpeech.startSpeak(t);
+//        String t = mNewsDetailBodyTv.getText().toString();
+//        mySpeech.startSpeak(t);
     }
 
     private void openByWebView() {
@@ -277,8 +277,8 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
 
     @Override
     protected void onDestroy() {
-        mySpeech.stopSpeak();
-        cancelUrlImageGetterSubscription();
+//        mySpeech.stopSpeak();
+//        cancelUrlImageGetterSubscription();
         super.onDestroy();
     }
 

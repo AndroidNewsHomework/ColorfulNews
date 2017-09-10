@@ -16,6 +16,8 @@
  */
 package com.kaku.colorfulnews.mvp.interactor.impl;
 
+import android.util.Log;
+
 import com.kaku.colorfulnews.App;
 import com.kaku.colorfulnews.listener.RequestCallBack;
 import com.kaku.colorfulnews.mvp.entity.NewsDetail;
@@ -51,7 +53,8 @@ public class NewsDetailInteractorImpl implements NewsDetailInteractor<NewsDetail
                 .map(new Func1<THUNewsDetail, NewsDetail>() {
                     @Override
                     public NewsDetail call(THUNewsDetail d) {
-                        return d.toNewsDetail();
+                        NewsDetail nd = d.toNewsDetail();
+                        return nd;
                     }
                 })
                 .compose(TransformUtils.<NewsDetail>defaultSchedulers())

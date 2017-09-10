@@ -22,10 +22,10 @@ public interface NewsService {
             @Query("pageNo") int startPage,
             @Query("category") String id);
 
-    @GET("news/action/query/detail?newsId={postId}")
+    @GET("news/action/query/detail")
     Observable<THUNewsDetail> getNewDetail(
             @Header("Cache-Control") String cacheControl,
-            @Path("postId") String postId);
+            @Query("newsId") String postId);
 
     @GET
     Observable<ResponseBody> getNewsBodyHtmlPhoto(
