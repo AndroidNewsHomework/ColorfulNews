@@ -16,18 +16,20 @@
  */
 package com.kaku.colorfulnews.mvp.interactor.impl;
 
-import com.kaku.colorfulnews.common.ApiConstants;
-import com.kaku.colorfulnews.common.HostType;
+import android.util.Log;
+
+import com.kaku.colorfulnews.App;
 import com.kaku.colorfulnews.listener.RequestCallBack;
+import com.kaku.colorfulnews.mvp.entity.BriefNewsRaw;
 import com.kaku.colorfulnews.mvp.entity.NewsSummary;
+import com.kaku.colorfulnews.mvp.entity.THUNewsList;
 import com.kaku.colorfulnews.mvp.interactor.NewsListInteractor;
-import com.kaku.colorfulnews.repository.network.RetrofitManager;
+import com.kaku.colorfulnews.network.RetrofitManager;
 import com.kaku.colorfulnews.utils.MyUtils;
 import com.kaku.colorfulnews.utils.TransformUtils;
 import com.socks.library.KLog;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -36,6 +38,7 @@ import rx.Subscriber;
 import rx.Subscription;
 import rx.functions.Func1;
 import rx.functions.Func2;
+import rx.observables.BlockingObservable;
 
 /**
  * @author 咖枯
@@ -56,23 +59,18 @@ public class NewsListInteractorImpl implements NewsListInteractor<List<NewsSumma
         // 对API调用了observeOn(MainThread)之后，线程会跑在主线程上，包括onComplete也是，
         // unsubscribe也在主线程，然后如果这时候调用call.cancel会导致NetworkOnMainThreadException
         // 加一句unsubscribeOn(io)
-        return RetrofitManager.getInstance(HostType.NETEASE_NEWS_VIDEO).getNewsListObservable(type, id, startPage)
-                .flatMap(new Func1<Map<String, List<NewsSummary>>, Observable<NewsSummary>>() {
+        return RetrofitManager.getInstance()
+                .getNewsListObservable(type, id, startPage)
+                .flatMap(new Func1<THUNewsList, Observable<BriefNewsRaw>>() {
                     @Override
-                    public Observable<NewsSummary> call(Map<String, List<NewsSummary>> map) {
-                        if (id.endsWith(ApiConstants.HOUSE_ID)) {
-                            // 房产实际上针对地区的它的id与返回key不同
-                            return Observable.from(map.get("北京"));
-                        }
-                        return Observable.from(map.get(id));
+                    public Observable<BriefNewsRaw> call(THUNewsList thuNewsList) {
+                        return Observable.from(thuNewsList.getList());
                     }
                 })
-                .map(new Func1<NewsSummary, NewsSummary>() {
+                .map(new Func1<BriefNewsRaw, NewsSummary>() {
                     @Override
-                    public NewsSummary call(NewsSummary newsSummary) {
-                        String ptime = MyUtils.formatDate(newsSummary.getPtime());
-                        newsSummary.setPtime(ptime);
-                        return newsSummary;
+                    public NewsSummary call(BriefNewsRaw bnr) {
+                        return bnr.toNewsSummary();
                     }
                 })
 //                .toList()

@@ -16,6 +16,8 @@
  */
 package com.kaku.colorfulnews.mvp.presenter.impl;
 
+import android.util.Log;
+
 import com.kaku.colorfulnews.mvp.entity.NewsSummary;
 import com.kaku.colorfulnews.common.LoadNewsType;
 import com.kaku.colorfulnews.mvp.interactor.NewsListInteractor;
@@ -73,9 +75,10 @@ public class NewsListPresenterImpl extends BasePresenterImpl<NewsListView, List<
 
     @Override
     public void success(List<NewsSummary> items) {
+        Log.e("NewsListPresenterImpl", "items " + items.size());
         misFirstLoad = true;
         if (items != null) {
-            mStartPage += 20;
+            mStartPage += 1;
         }
 
         int loadType = mIsRefresh ? LoadNewsType.TYPE_REFRESH_SUCCESS : LoadNewsType.TYPE_LOAD_MORE_SUCCESS;

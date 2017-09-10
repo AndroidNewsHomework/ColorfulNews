@@ -74,4 +74,8 @@ public class ApiConstants {
         }
         return host;
     }
+
+    public static String getTHUHost() {
+        return "http://166.111.68.66:2042";
+    }
 }

@@ -50,7 +50,6 @@ import com.kaku.colorfulnews.utils.MyUtils;
 import com.kaku.colorfulnews.utils.NetUtil;
 import com.kaku.colorfulnews.utils.SpeechUtil;
 import com.kaku.colorfulnews.utils.TransformUtils;
-import com.kaku.colorfulnews.widget.URLImageGetter;
 import com.socks.library.KLog;
 
 import java.util.List;
@@ -89,12 +88,11 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     @BindView(R.id.mask_view)
     View mMaskView;
 
-    SpeechUtil mySpeech = new SpeechUtil(App.getAppContext());
+//    SpeechUtil mySpeech = new SpeechUtil(App.getAppContext());
 
     @Inject
     NewsDetailPresenterImpl mNewsDetailPresenter;
 
-    private URLImageGetter mUrlImageGetter;
     private String mNewsTitle;
     private String mShareLink;
 
@@ -187,8 +185,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
         int imgTotal = newsDetail.getImg().size();
         if (isShowBody(newsBody, imgTotal)) {
 //              mNewsDetailBodyTv.setMovementMethod(LinkMovementMethod.getInstance());//加这句才能让里面的超链接生效,实测经常卡机崩溃
-            mUrlImageGetter = new URLImageGetter(mNewsDetailBodyTv, newsBody, imgTotal);
-            mNewsDetailBodyTv.setText(Html.fromHtml(newsBody, mUrlImageGetter, null));
+            mNewsDetailBodyTv.setText(newsBody);
         } else {
             mNewsDetailBodyTv.setText(Html.fromHtml(newsBody));
         }
@@ -253,8 +250,8 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     }
 
     private void doSpeech() {
-        String t = mNewsDetailBodyTv.getText().toString();
-        mySpeech.startSpeak(t);
+//        String t = mNewsDetailBodyTv.getText().toString();
+//        mySpeech.startSpeak(t);
     }
 
     private void openByWebView() {
@@ -280,21 +277,9 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
 
     @Override
     protected void onDestroy() {
-        mySpeech.stopSpeak();
-        cancelUrlImageGetterSubscription();
+//        mySpeech.stopSpeak();
+//        cancelUrlImageGetterSubscription();
         super.onDestroy();
-    }
-
-    private void cancelUrlImageGetterSubscription() {
-        try {
-            if (mUrlImageGetter != null && mUrlImageGetter.mSubscription != null
-                    && !mUrlImageGetter.mSubscription.isUnsubscribed()) {
-                mUrlImageGetter.mSubscription.unsubscribe();
-                KLog.d("UrlImageGetter unsubscribe");
-            }
-        } catch (Exception e) {
-            KLog.e("取消UrlImageGetter Subscription 出现异常： " + e.toString());
-        }
     }
 
     @OnClick(R.id.fab)
