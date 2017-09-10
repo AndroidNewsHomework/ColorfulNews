@@ -19,6 +19,7 @@ package com.kaku.colorfulnews.mvp.ui.adapter;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -90,6 +91,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary> {
 
     @Override
     public int getItemViewType(int position) {
+        Log.e("NewsListAdapter", "getItemViewType" + position + mList.size());
         if (mIsShowFooter && isFooterPosition(position)) {
             return TYPE_FOOTER;
         } else if (!TextUtils.isEmpty(mList.get(position).getDigest())) {

@@ -94,4 +94,5 @@ dependencies {
     compile files('libs/Msc.jar')
     compile files('libs/Sunflower.jar')
 
+    androidTestCompile 'org.testng:testng:6.9.6'
 }

@@ -1,37 +1,17 @@
-/*
- * Copyright (c) 2016 咖枯 <kaku201313@163.com | 3772304@qq.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
-package com.kaku.colorfulnews.repository.network;
+package com.kaku.colorfulnews.network;
 
 import android.support.annotation.NonNull;
-import android.util.SparseArray;
 
 import com.kaku.colorfulnews.App;
 import com.kaku.colorfulnews.common.ApiConstants;
-import com.kaku.colorfulnews.common.HostType;
-import com.kaku.colorfulnews.mvp.entity.NewsDetail;
-import com.kaku.colorfulnews.mvp.entity.NewsSummary;
+import com.kaku.colorfulnews.mvp.entity.THUNewsDetail;
+import com.kaku.colorfulnews.mvp.entity.THUNewsList;
 import com.kaku.colorfulnews.utils.NetUtil;
 import com.socks.library.KLog;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -72,15 +52,14 @@ public class RetrofitManager {
 
     private static volatile OkHttpClient sOkHttpClient;
 
-    private static SparseArray<RetrofitManager> sRetrofitManager = new SparseArray<>(HostType.TYPE_COUNT);
+    private static RetrofitManager instance;
 
-    public RetrofitManager(@HostType.HostTypeChecker int hostType) {
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(ApiConstants.getHost(hostType))
+    private RetrofitManager() {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(ApiConstants.getTHUHost())
                 .client(getOkHttpClient()).addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build();
         mNewsService = retrofit.create(NewsService.class);
     }
-
     private OkHttpClient getOkHttpClient() {
         if (sOkHttpClient == null) {
             synchronized (RetrofitManager.class) {
@@ -145,18 +124,9 @@ public class RetrofitManager {
         }
     };
 
-    /**
-     * @param hostType NETEASE_NEWS_VIDEO：1 （新闻，视频），GANK_GIRL_PHOTO：2（图片新闻）;
-     *                 EWS_DETAIL_HTML_PHOTO:3新闻详情html图片)
-     */
-    public static RetrofitManager getInstance(int hostType) {
-        RetrofitManager retrofitManager = sRetrofitManager.get(hostType);
-        if (retrofitManager == null) {
-            retrofitManager = new RetrofitManager(hostType);
-            sRetrofitManager.put(hostType, retrofitManager);
-            return retrofitManager;
-        }
-        return retrofitManager;
+    public static RetrofitManager getInstance() {
+        if (instance == null) instance = new RetrofitManager();
+        return instance;
     }
 
 
@@ -168,27 +138,17 @@ public class RetrofitManager {
         return NetUtil.isNetworkAvailable() ? CACHE_CONTROL_AGE : CACHE_CONTROL_CACHE;
     }
 
-    /**
-     * example：http://c.m.163.com/nc/article/headline/T1348647909107/0-20.html
-     *
-     * @param newsType ：headline为头条,house为房产，list为其他
-     */
-    public Observable<Map<String, List<NewsSummary>>> getNewsListObservable(
+    public Observable<THUNewsList> getNewsListObservable(
             String newsType, String newsId, int startPage) {
-        return mNewsService.getNewsList(getCacheControl(), newsType, newsId, startPage);
+        return mNewsService.getNewsList(getCacheControl(), startPage + 1, newsId);
     }
 
-    /**
-     * example：http://c.m.163.com/nc/article/BG6CGA9M00264N2N/full.html
-     */
-    public Observable<Map<String, NewsDetail>> getNewsDetailObservable(String postId) {
+    public Observable<THUNewsDetail> getNewsDetailObservable(String postId) {
         KLog.d(Thread.currentThread().getName());
-
         return mNewsService.getNewDetail(getCacheControl(), postId);
     }
 
     public Observable<ResponseBody> getNewsBodyHtmlPhoto(String photoPath) {
         return mNewsService.getNewsBodyHtmlPhoto(photoPath);
     }
-
 }

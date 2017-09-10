@@ -31,6 +31,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -193,6 +194,7 @@ public class NewsListFragment extends BaseFragment implements NewsListView, News
         switch (loadType) {
             case LoadNewsType.TYPE_REFRESH_SUCCESS:
                 mSwipeRefreshLayout.setRefreshing(false);
+                Log.e("NewsListFragment", "newssummary: " + newsSummary.size());
                 mNewsListAdapter.setList(newsSummary);
                 mNewsListAdapter.notifyDataSetChanged();
                 checkIsEmpty(newsSummary);

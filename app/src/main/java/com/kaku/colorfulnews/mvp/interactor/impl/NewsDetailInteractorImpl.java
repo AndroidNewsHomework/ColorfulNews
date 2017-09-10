@@ -17,17 +17,16 @@
 package com.kaku.colorfulnews.mvp.interactor.impl;
 
 import com.kaku.colorfulnews.App;
-import com.kaku.colorfulnews.common.HostType;
 import com.kaku.colorfulnews.listener.RequestCallBack;
 import com.kaku.colorfulnews.mvp.entity.NewsDetail;
+import com.kaku.colorfulnews.mvp.entity.THUNewsDetail;
 import com.kaku.colorfulnews.mvp.interactor.NewsDetailInteractor;
-import com.kaku.colorfulnews.repository.network.RetrofitManager;
+import com.kaku.colorfulnews.network.RetrofitManager;
 import com.kaku.colorfulnews.utils.MyUtils;
 import com.kaku.colorfulnews.utils.TransformUtils;
 import com.socks.library.KLog;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -47,15 +46,12 @@ public class NewsDetailInteractorImpl implements NewsDetailInteractor<NewsDetail
 
     @Override
     public Subscription loadNewsDetail(final RequestCallBack<NewsDetail> callBack, final String postId) {
-        return RetrofitManager.getInstance(HostType.NETEASE_NEWS_VIDEO).getNewsDetailObservable(postId)
-                .map(new Func1<Map<String, NewsDetail>, NewsDetail>() {
+        return RetrofitManager.getInstance()
+                .getNewsDetailObservable(postId)
+                .map(new Func1<THUNewsDetail, NewsDetail>() {
                     @Override
-                    public NewsDetail call(Map<String, NewsDetail> map) {
-                        KLog.d(Thread.currentThread().getName());
-
-                        NewsDetail newsDetail = map.get(postId);
-                        changeNewsDetail(newsDetail);
-                        return newsDetail;
+                    public NewsDetail call(THUNewsDetail d) {
+                        return d.toNewsDetail();
                     }
                 })
                 .compose(TransformUtils.<NewsDetail>defaultSchedulers())
