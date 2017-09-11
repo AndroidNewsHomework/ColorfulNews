@@ -16,6 +16,7 @@
  */
 package com.kaku.colorfulnews.mvp.ui.activities;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -52,6 +53,7 @@ import com.kaku.colorfulnews.utils.SpeechUtil;
 import com.kaku.colorfulnews.utils.TransformUtils;
 import com.socks.library.KLog;
 
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -88,7 +90,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     @BindView(R.id.mask_view)
     View mMaskView;
 
-//    SpeechUtil mySpeech = new SpeechUtil(App.getAppContext());
+    SpeechUtil mySpeech = new SpeechUtil(App.getAppContext());
 
     @Inject
     NewsDetailPresenterImpl mNewsDetailPresenter;
@@ -250,8 +252,8 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     }
 
     private void doSpeech() {
-//        String t = mNewsDetailBodyTv.getText().toString();
-//        mySpeech.startSpeak(t);
+        String t = mNewsDetailBodyTv.getText().toString();
+        mySpeech.startSpeak(t);
     }
 
     private void openByWebView() {
@@ -277,7 +279,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
 
     @Override
     protected void onDestroy() {
-//        mySpeech.stopSpeak();
+        mySpeech.stopSpeak();
 //        cancelUrlImageGetterSubscription();
         super.onDestroy();
     }
@@ -289,10 +291,15 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
 
     private void share() {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
+        intent.setType("image/*");
+        //ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI");
+        //intent.setComponent(comp);
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File("/storage/emulated/0/Pictures/09.png")));
+        intent.putExtra("Kdescription", getShareContents());
         intent.putExtra(Intent.EXTRA_TEXT, getShareContents());
-        startActivity(Intent.createChooser(intent, getTitle()));
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
+        intent.putExtra(Intent.EXTRA_TITLE, "我是标题");
+        startActivity(intent);
     }
 
     @NonNull
