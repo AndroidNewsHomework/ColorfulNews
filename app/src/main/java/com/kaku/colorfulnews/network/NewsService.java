@@ -27,6 +27,12 @@ public interface NewsService {
             @Header("Cache-Control") String cacheControl,
             @Query("newsId") String postId);
 
+    @GET("/news/action/query/search?pageSize=20")
+    Observable<THUNewsList> getSearchNewsList(
+            @Header("Cache-Control") String cacheControl,
+            @Query("keyword") String kw,
+            @Query("pageNo") int pageNo);
+
     @GET
     Observable<ResponseBody> getNewsBodyHtmlPhoto(
             @Url String photoPath);

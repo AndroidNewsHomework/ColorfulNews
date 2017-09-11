@@ -46,4 +46,5 @@ public class Constants {
 
     public static final String NEWS_LINK = "news_link";
     public static final String NEWS_TITLE = "news_title";
+    public static final String SEARCH_KEYWORD = "keyword";
 }

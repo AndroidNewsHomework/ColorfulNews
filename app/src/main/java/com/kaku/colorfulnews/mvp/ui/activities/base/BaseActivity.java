@@ -40,6 +40,7 @@ import android.widget.CompoundButton;
 import com.kaku.colorfulnews.App;
 import com.kaku.colorfulnews.R;
 import com.kaku.colorfulnews.annotation.BindValues;
+import com.kaku.colorfulnews.common.Constants;
 import com.kaku.colorfulnews.di.component.ActivityComponent;
 import com.kaku.colorfulnews.di.component.DaggerActivityComponent;
 import com.kaku.colorfulnews.di.module.ActivityModule;
@@ -343,10 +344,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                 break;
             case R.id.action_search:
                 if (mIsHasNavigationView) {
-//                    KeywordDialogFragment fragment = new KeywordDialogFragment();
-//                    fragment.show(getSupportFragmentManager(), KeywordDialogFragment.TAG);
-                    Intent intent = new Intent(this, SearchNewsActivity.class);
-                    startActivity(intent);
+                    KeywordDialogFragment fragment = new KeywordDialogFragment();
+                    fragment.show(getSupportFragmentManager(), KeywordDialogFragment.TAG);
                 }
                 break;
 
@@ -389,7 +388,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     @Override
     public void onPositiveClick(String kw) {
-
+        Intent intent = new Intent(this, SearchNewsActivity.class);
+        intent.putExtra(Constants.SEARCH_KEYWORD, kw);
+        startActivity(intent);
     }
 
     @Override

@@ -80,7 +80,8 @@ public class BriefNewsRaw {
         ns.setLtitle(news_Title);
         ns.setSource(news_URL);
         ns.setImgsrc(news_Pictures);
-        ns.setPtime(news_Time.substring(0, 8));
+        try { ns.setPtime(news_Time.substring(0, 8)); }
+        catch (Exception e) { ns.setPtime("Unknown");}
         return ns;
     }
 

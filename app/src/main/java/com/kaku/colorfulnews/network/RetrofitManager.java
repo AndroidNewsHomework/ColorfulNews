@@ -148,6 +148,10 @@ public class RetrofitManager {
         return mNewsService.getNewDetail(getCacheControl(), postId);
     }
 
+    public Observable<THUNewsList> getSearchNewsListObservable(String kw, int startPage) {
+        return mNewsService.getSearchNewsList(getCacheControl(), kw, startPage + 1);
+    }
+
     public Observable<ResponseBody> getNewsBodyHtmlPhoto(String photoPath) {
         return mNewsService.getNewsBodyHtmlPhoto(photoPath);
     }

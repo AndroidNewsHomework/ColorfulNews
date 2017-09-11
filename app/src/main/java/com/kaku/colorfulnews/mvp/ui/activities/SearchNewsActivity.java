@@ -16,17 +16,17 @@
  */
 package com.kaku.colorfulnews.mvp.ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.kaku.colorfulnews.R;
 import com.kaku.colorfulnews.annotation.BindValues;
@@ -38,8 +38,8 @@ import com.kaku.colorfulnews.mvp.presenter.impl.NewsPresenterImpl;
 import com.kaku.colorfulnews.mvp.ui.activities.base.BaseActivity;
 import com.kaku.colorfulnews.mvp.ui.adapter.PagerAdapter.NewsFragmentPagerAdapter;
 import com.kaku.colorfulnews.mvp.ui.fragment.NewsListFragment;
+import com.kaku.colorfulnews.mvp.ui.fragment.SearchNewsListFragment;
 import com.kaku.colorfulnews.mvp.view.NewsView;
-import com.kaku.colorfulnews.utils.MyUtils;
 import com.kaku.colorfulnews.utils.RxBus;
 
 import java.util.ArrayList;
@@ -56,17 +56,15 @@ import rx.functions.Action1;
  * @version 1.0 2016/6
  */
 @BindValues(mIsHasNavigationView = true)
-public class NewsActivity extends BaseActivity
+public class SearchNewsActivity extends BaseActivity
         implements NewsView {
     private String mCurrentViewPagerName;
     private List<String> mChannelNames;
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.tabs)
-    TabLayout mTabs;
-    @BindView(R.id.view_pager)
-    ViewPager mViewPager;
+    @BindView(R.id.llayout)
+    FrameLayout mLLayout;
     @BindView(R.id.nav_view)
     NavigationView mNavView;
     @BindView(R.id.fab)
@@ -77,24 +75,21 @@ public class NewsActivity extends BaseActivity
     @Inject
     NewsPresenterImpl mNewsPresenter;
 
+    private String mSearchKw;
+
     private List<Fragment> mNewsFragmentList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mSubscription = RxBus.getInstance().toObservable(ChannelChangeEvent.class)
-                .subscribe(new Action1<ChannelChangeEvent>() {
-                    @Override
-                    public void call(ChannelChangeEvent channelChangeEvent) {
-                        mNewsPresenter.onChannelDbChanged();
-                    }
-                });
+        mSubscription = null;
+        mSearchKw = getIntent().getExtras().getString(Constants.SEARCH_KEYWORD);
     }
 
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_news;
+        return R.layout.activity_newssearch;
     }
 
     @Override
@@ -104,99 +99,44 @@ public class NewsActivity extends BaseActivity
 
     @Override
     public void initViews() {
-//        mIsHasNavigationView = true;
         mBaseNavView = mNavView;
 
         mPresenter = mNewsPresenter;
         mPresenter.attachView(this);
     }
 
-    @OnClick({R.id.fab, R.id.add_channel_iv})
+    @OnClick({R.id.fab})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
                 RxBus.getInstance().post(new ScrollToTopEvent());
                 break;
-            case R.id.add_channel_iv:
-                Intent intent = new Intent(this, NewsChannelActivity.class);
-                startActivity(intent);
-                break;
         }
-
     }
-
 
     @Override
     public void initViewPager(List<NewsChannelTable> newsChannels) {
-        final List<String> channelNames = new ArrayList<>();
         if (newsChannels != null) {
-            setNewsList(newsChannels, channelNames);
-            setViewPager(channelNames);
+            setNewsList(newsChannels);
         }
     }
 
-    private void setNewsList(List<NewsChannelTable> newsChannels, List<String> channelNames) {
+    private void setNewsList(List<NewsChannelTable> newsChannels) {
         mNewsFragmentList.clear();
-        for (NewsChannelTable newsChannel : newsChannels) {
-            NewsListFragment newsListFragment = createListFragments(newsChannel);
-            mNewsFragmentList.add(newsListFragment);
-            channelNames.add(newsChannel.getNewsChannelName());
-        }
+        NewsChannelTable newsChannel  = newsChannels.get(0);
+        SearchNewsListFragment newsListFragment = createListFragments(newsChannel);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.llayout, newsListFragment)
+                .commit();
+        mNewsFragmentList.add(newsListFragment);
     }
 
-    private NewsListFragment createListFragments(NewsChannelTable newsChannel) {
-        NewsListFragment fragment = new NewsListFragment();
+    private SearchNewsListFragment createListFragments(NewsChannelTable newsChannel) {
+        SearchNewsListFragment fragment = new SearchNewsListFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.NEWS_ID, newsChannel.getNewsChannelId());
-        bundle.putString(Constants.NEWS_TYPE, newsChannel.getNewsChannelType());
-        bundle.putInt(Constants.CHANNEL_POSITION, newsChannel.getNewsChannelIndex());
+        bundle.putString(Constants.SEARCH_KEYWORD, mSearchKw);
         fragment.setArguments(bundle);
         return fragment;
-    }
-
-    private void setViewPager(List<String> channelNames) {
-        NewsFragmentPagerAdapter adapter = new NewsFragmentPagerAdapter(
-                getSupportFragmentManager(), channelNames, mNewsFragmentList);
-        mViewPager.setAdapter(adapter);
-        mTabs.setupWithViewPager(mViewPager);
-        MyUtils.dynamicSetTabLayoutMode(mTabs);
-//        mTabs.setTabsFromPagerAdapter(adapter);
-        setPageChangeListener();
-
-        mChannelNames = channelNames;
-        int currentViewPagerPosition = getCurrentViewPagerPosition();
-        mViewPager.setCurrentItem(currentViewPagerPosition, false);
-    }
-
-    private int getCurrentViewPagerPosition() {
-        int position = 0;
-        if (mCurrentViewPagerName != null) {
-            for (int i = 0; i < mChannelNames.size(); i++) {
-                if (mCurrentViewPagerName.equals(mChannelNames.get(i))) {
-                    position = i;
-                }
-            }
-        }
-        return position;
-    }
-
-    private void setPageChangeListener() {
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mCurrentViewPagerName = mChannelNames.get(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
     @Override
@@ -214,3 +154,4 @@ public class NewsActivity extends BaseActivity
         Snackbar.make(mFab, message, Snackbar.LENGTH_SHORT).show();
     }
 }
+

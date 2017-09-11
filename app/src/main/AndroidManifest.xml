@@ -40,6 +40,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".mvp.ui.activities.SearchNewsActivity"
+            android:theme="@style/BaseAppTheme.NoTrans">
+        </activity>
+        <activity
             android:name=".mvp.ui.activities.NewsActivity"
             android:theme="@style/BaseAppTheme.NoTrans">
         </activity>

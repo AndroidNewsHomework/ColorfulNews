@@ -31,13 +31,13 @@ import javax.inject.Inject;
  * @author 咖枯
  * @version 1.0 2016/6/2
  */
-public class NewPresenterImpl extends BasePresenterImpl<NewsView, List<NewsChannelTable>>
+public class NewsPresenterImpl extends BasePresenterImpl<NewsView, List<NewsChannelTable>>
         implements NewsPresenter {
 
     private NewsInteractor<List<NewsChannelTable>> mNewsInteractor;
 
     @Inject
-    public NewPresenterImpl(NewsInteractorImpl newsInteractor) {
+    public NewsPresenterImpl(NewsInteractorImpl newsInteractor) {
         mNewsInteractor = newsInteractor;
     }
 

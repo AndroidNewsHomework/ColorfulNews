@@ -28,6 +28,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="迷茫着、探索着、一路走来。。。"/>
+        android:text=""/>
 
 </LinearLayout>
