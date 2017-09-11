@@ -47,6 +47,8 @@ import com.kaku.colorfulnews.mvp.presenter.base.BasePresenter;
 import com.kaku.colorfulnews.mvp.ui.activities.AboutActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.NewsActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.NewsDetailActivity;
+import com.kaku.colorfulnews.mvp.ui.activities.SearchNewsActivity;
+import com.kaku.colorfulnews.mvp.ui.fragment.KeywordDialogFragment;
 import com.kaku.colorfulnews.utils.MyUtils;
 import com.kaku.colorfulnews.utils.NetUtil;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
@@ -60,7 +62,9 @@ import rx.Subscription;
  * @author 咖枯
  * @version 1.0 2016/5/19
  */
-public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity {
+public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity
+    implements KeywordDialogFragment.ClickListener
+{
     protected ActivityComponent mActivityComponent;
     private boolean mIsChangeTheme;
 
@@ -337,6 +341,14 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                     startActivity(intent);
                 }
                 break;
+            case R.id.action_search:
+                if (mIsHasNavigationView) {
+//                    KeywordDialogFragment fragment = new KeywordDialogFragment();
+//                    fragment.show(getSupportFragmentManager(), KeywordDialogFragment.TAG);
+                    Intent intent = new Intent(this, SearchNewsActivity.class);
+                    startActivity(intent);
+                }
+                break;
 
         }
         return super.onOptionsItemSelected(item);
@@ -374,4 +386,15 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             mNightView = null;
         }
     }
+
+    @Override
+    public void onPositiveClick(String kw) {
+
+    }
+
+    @Override
+    public void onNegativeClick() {
+
+    }
+
 }
