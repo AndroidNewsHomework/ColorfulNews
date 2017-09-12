@@ -25,6 +25,7 @@ import com.kaku.colorfulnews.di.scope.PerActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.NewsActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.NewsChannelActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.NewsDetailActivity;
+import com.kaku.colorfulnews.mvp.ui.activities.NewsFavoriteActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.SearchNewsActivity;
 
 import dagger.Component;
@@ -48,6 +49,8 @@ public interface ActivityComponent {
     void inject(NewsActivity newsActivity);
 
     void inject(SearchNewsActivity searchNewsActivity);
+
+    void inject(NewsFavoriteActivity newsFavoriteActivity);
 
     void inject(NewsDetailActivity newsDetailActivity);
 

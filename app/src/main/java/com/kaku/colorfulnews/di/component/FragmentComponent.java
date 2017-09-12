@@ -22,6 +22,7 @@ import android.content.Context;
 import com.kaku.colorfulnews.di.module.FragmentModule;
 import com.kaku.colorfulnews.di.scope.ContextLife;
 import com.kaku.colorfulnews.di.scope.PerFragment;
+import com.kaku.colorfulnews.mvp.ui.fragment.NewsFavoriteFragment;
 import com.kaku.colorfulnews.mvp.ui.fragment.NewsListFragment;
 import com.kaku.colorfulnews.mvp.ui.fragment.SearchNewsListFragment;
 
@@ -45,4 +46,6 @@ public interface FragmentComponent {
     void inject(NewsListFragment newsListFragment);
 
     void inject(SearchNewsListFragment newsListFragment);
+
+    void inject(NewsFavoriteFragment newsFavoriteFragment);
 }

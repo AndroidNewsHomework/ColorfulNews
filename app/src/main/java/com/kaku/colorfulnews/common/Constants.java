@@ -33,7 +33,11 @@ public class Constants {
     public static final String CHANNEL_POSITION = "channel_position";
 
     public static final String NEWS_POST_ID = "news_post_id";
+    public static final String NEWS_DIGEST = "news_digest";
+    public static final String NEWS_LTITLE = "news_ltitle";
+    public static final String NEWS_SOURCE = "news_source";
     public static final String NEWS_IMG_RES = "news_img_res";
+    public static final String NEWS_PTIME = "news_ptime";
 
     public static final String TRANSITION_ANIMATION_NEWS_PHOTOS = "transition_animation_news_photos";
     public static final String SHOW_NEWS_PHOTO = "show_news_photo";
@@ -47,4 +51,6 @@ public class Constants {
     public static final String NEWS_LINK = "news_link";
     public static final String NEWS_TITLE = "news_title";
     public static final String SEARCH_KEYWORD = "keyword";
+    public static final String FAVORITE_SAVENAME = "favorite.data";
+    public static final String FAVORITE_SAVEDIR = "favorites";
 }

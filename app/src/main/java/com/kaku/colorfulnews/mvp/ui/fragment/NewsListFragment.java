@@ -267,6 +267,11 @@ public class NewsListFragment extends BaseFragment implements
         Intent intent = new Intent(mActivity, NewsDetailActivity.class);
         intent.putExtra(Constants.NEWS_POST_ID, newsSummaryList.get(position).getPostid());
         intent.putExtra(Constants.NEWS_IMG_RES, newsSummaryList.get(position).getImgsrc());
+        intent.putExtra(Constants.NEWS_DIGEST, newsSummaryList.get(position).getDigest());
+        intent.putExtra(Constants.NEWS_LTITLE, newsSummaryList.get(position).getLtitle());
+        intent.putExtra(Constants.NEWS_PTIME, newsSummaryList.get(position).getPtime());
+        intent.putExtra(Constants.NEWS_SOURCE, newsSummaryList.get(position).getSource());
+        intent.putExtra(Constants.NEWS_TITLE, newsSummaryList.get(position).getTitle());
         return intent;
     }
 

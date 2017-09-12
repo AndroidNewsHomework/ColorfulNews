@@ -42,8 +42,9 @@ import com.kaku.colorfulnews.common.Constants;
 import com.kaku.colorfulnews.common.LoadNewsType;
 import com.kaku.colorfulnews.event.ScrollToTopEvent;
 import com.kaku.colorfulnews.mvp.entity.NewsSummary;
-import com.kaku.colorfulnews.mvp.presenter.impl.NewsListPresenterImpl;
-import com.kaku.colorfulnews.mvp.presenter.impl.SearchNewsListPresenterImpl;
+import com.kaku.colorfulnews.mvp.interactor.impl.NewsFavoriteInteractorImpl;
+import com.kaku.colorfulnews.mvp.presenter.NewsFavoritePresenter;
+import com.kaku.colorfulnews.mvp.presenter.impl.NewsFavoritePresenterImpl;
 import com.kaku.colorfulnews.mvp.ui.activities.NewsDetailActivity;
 import com.kaku.colorfulnews.mvp.ui.adapter.NewsListAdapter;
 import com.kaku.colorfulnews.mvp.ui.fragment.base.BaseFragment;
@@ -66,7 +67,7 @@ import static android.support.v7.widget.RecyclerView.OnScrollListener;
  * @author 咖枯
  * @version 1.0 2016/5/18
  */
-public class SearchNewsListFragment extends BaseFragment implements
+public class NewsFavoriteFragment extends BaseFragment implements
         NewsListView,
         NewsListAdapter.OnNewsListItemClickListener,
         SwipeRefreshLayout.OnRefreshListener {
@@ -82,12 +83,11 @@ public class SearchNewsListFragment extends BaseFragment implements
     @Inject
     NewsListAdapter mNewsListAdapter;
     @Inject
-    SearchNewsListPresenterImpl mNewsListPresenter;
+    NewsFavoritePresenterImpl mNewsListPresenter;
     @Inject
     Activity mActivity;
 
     private boolean mIsAllLoaded;
-    private String mKw;
 
     @Override
     public void initInjector() {
@@ -109,7 +109,6 @@ public class SearchNewsListFragment extends BaseFragment implements
     }
 
     private void initPresenter() {
-        mNewsListPresenter.setKw(mKw);
         mPresenter = mNewsListPresenter;
         mPresenter.attachView(this);
         mPresenter.onCreate();
@@ -169,7 +168,6 @@ public class SearchNewsListFragment extends BaseFragment implements
 
     private void initValues() {
         if (getArguments() != null) {
-            mKw = getArguments().getString(Constants.SEARCH_KEYWORD);
         }
     }
 

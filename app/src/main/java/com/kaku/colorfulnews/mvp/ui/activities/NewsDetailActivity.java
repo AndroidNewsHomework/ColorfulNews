@@ -44,9 +44,11 @@ import com.kaku.colorfulnews.App;
 import com.kaku.colorfulnews.R;
 import com.kaku.colorfulnews.common.Constants;
 import com.kaku.colorfulnews.mvp.entity.NewsDetail;
+import com.kaku.colorfulnews.mvp.entity.NewsSummary;
 import com.kaku.colorfulnews.mvp.presenter.impl.NewsDetailPresenterImpl;
 import com.kaku.colorfulnews.mvp.ui.activities.base.BaseActivity;
 import com.kaku.colorfulnews.mvp.view.NewsDetailView;
+import com.kaku.colorfulnews.utils.FavoriteUtil;
 import com.kaku.colorfulnews.utils.MyUtils;
 import com.kaku.colorfulnews.utils.NetUtil;
 import com.kaku.colorfulnews.utils.SpeechUtil;
@@ -232,6 +234,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.news_detail, menu);
+        setIsFavorite(menu);
         return true;
     }
 
@@ -247,8 +250,33 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
             case R.id.action_speech:
                 doSpeech();
                 break;
+            case R.id.action_favorite:
+                doFavorite();
+                break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void doFavorite() {
+        NewsSummary summary = new NewsSummary();
+        summary.setPostid(getIntent().getStringExtra(Constants.NEWS_POST_ID));
+        summary.setImgsrc(getIntent().getStringExtra(Constants.NEWS_IMG_RES));
+        summary.setTitle(getIntent().getStringExtra(Constants.NEWS_TITLE));
+        summary.setLtitle(getIntent().getStringExtra(Constants.NEWS_LTITLE));
+        summary.setDigest(getIntent().getStringExtra(Constants.NEWS_DIGEST));
+        summary.setSource(getIntent().getStringExtra(Constants.NEWS_SOURCE));
+        summary.setPtime(getIntent().getStringExtra(Constants.NEWS_PTIME));
+        new FavoriteUtil().modifyFavorite(summary);
+        setIsFavorite(mToolbar.getMenu());
+    }
+
+    private void setIsFavorite(Menu menu) {
+        String postid = getIntent().getStringExtra(Constants.NEWS_POST_ID);
+        if (FavoriteUtil.contains(postid)) {
+            menu.getItem(3).setTitle(R.string.donot_favorite);
+        } else {
+            menu.getItem(3).setTitle(R.string.do_favorite);
+        }
     }
 
     private void doSpeech() {

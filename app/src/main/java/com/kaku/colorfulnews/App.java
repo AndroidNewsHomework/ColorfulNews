@@ -31,6 +31,7 @@ import com.kaku.colorfulnews.di.module.ApplicationModule;
 import com.kaku.colorfulnews.greendao.DaoMaster;
 import com.kaku.colorfulnews.greendao.DaoSession;
 import com.kaku.colorfulnews.greendao.NewsChannelTableDao;
+import com.kaku.colorfulnews.utils.FavoriteUtil;
 import com.kaku.colorfulnews.utils.MyUtils;
 import com.socks.library.KLog;
 import com.squareup.leakcanary.LeakCanary;
@@ -48,7 +49,7 @@ import com.iflytek.cloud.SpeechUtility;
  */
 public class App extends Application {
 
-    private  ApplicationComponent mApplicationComponent;
+    private ApplicationComponent mApplicationComponent;
     private RefWatcher refWatcher;
 
     public static RefWatcher getRefWatcher(Context context) {
@@ -68,6 +69,7 @@ public class App extends Application {
         initStrictMode();
         initDayNightMode();
         // initSpeech();
+        FavoriteUtil.init();
         KLog.init(BuildConfig.LOG_DEBUG);
         // 官方推荐将获取 DaoMaster 对象的方法放到 Application 层，这样将避免多次创建生成 Session 对象
         setupDatabase();

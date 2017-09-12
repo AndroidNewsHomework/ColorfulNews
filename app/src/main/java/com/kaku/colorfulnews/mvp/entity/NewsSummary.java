@@ -16,6 +16,7 @@
  */
 package com.kaku.colorfulnews.mvp.entity;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -23,7 +24,7 @@ import java.util.TreeSet;
  * @author 咖枯
  * @version 1.0 2016/5/24
  */
-public class NewsSummary {
+public class NewsSummary implements Serializable {
     private String postid;
     private String digest;
     private String title;

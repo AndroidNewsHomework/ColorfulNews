@@ -16,4 +16,9 @@
         android:orderInCategory="300"
         android:title="@string/speech"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_favorite"
+        android:orderInCategory="300"
+        android:title="@string/do_favorite"
+        app:showAsAction="never" />
 </menu>

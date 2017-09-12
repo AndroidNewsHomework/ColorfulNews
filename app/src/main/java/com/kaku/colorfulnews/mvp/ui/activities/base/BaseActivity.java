@@ -48,6 +48,7 @@ import com.kaku.colorfulnews.mvp.presenter.base.BasePresenter;
 import com.kaku.colorfulnews.mvp.ui.activities.AboutActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.NewsActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.NewsDetailActivity;
+import com.kaku.colorfulnews.mvp.ui.activities.NewsFavoriteActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.SearchNewsActivity;
 import com.kaku.colorfulnews.mvp.ui.fragment.KeywordDialogFragment;
 import com.kaku.colorfulnews.utils.MyUtils;
@@ -348,7 +349,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                     fragment.show(getSupportFragmentManager(), KeywordDialogFragment.TAG);
                 }
                 break;
-
+            case R.id.action_favorite:
+                if (mIsHasNavigationView) {
+                    Intent intent = new Intent(this, NewsFavoriteActivity.class);
+                    startActivity(intent);
+                }
         }
         return super.onOptionsItemSelected(item);
     }
