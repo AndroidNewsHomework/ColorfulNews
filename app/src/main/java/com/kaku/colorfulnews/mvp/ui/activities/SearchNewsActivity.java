@@ -21,23 +21,17 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.kaku.colorfulnews.R;
 import com.kaku.colorfulnews.annotation.BindValues;
 import com.kaku.colorfulnews.common.Constants;
-import com.kaku.colorfulnews.event.ChannelChangeEvent;
 import com.kaku.colorfulnews.event.ScrollToTopEvent;
 import com.kaku.colorfulnews.greendao.NewsChannelTable;
 import com.kaku.colorfulnews.mvp.presenter.impl.NewsPresenterImpl;
 import com.kaku.colorfulnews.mvp.ui.activities.base.BaseActivity;
-import com.kaku.colorfulnews.mvp.ui.adapter.PagerAdapter.NewsFragmentPagerAdapter;
-import com.kaku.colorfulnews.mvp.ui.fragment.NewsListFragment;
 import com.kaku.colorfulnews.mvp.ui.fragment.SearchNewsListFragment;
 import com.kaku.colorfulnews.mvp.view.NewsView;
 import com.kaku.colorfulnews.utils.RxBus;
@@ -49,13 +43,12 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.functions.Action1;
 
 /**
  * @author 咖枯
  * @version 1.0 2016/6
  */
-@BindValues(mIsHasNavigationView = true)
+@BindValues(mIsHasNavigationView = false)
 public class SearchNewsActivity extends BaseActivity
         implements NewsView {
     private String mCurrentViewPagerName;
@@ -65,12 +58,8 @@ public class SearchNewsActivity extends BaseActivity
     Toolbar mToolbar;
     @BindView(R.id.llayout)
     FrameLayout mLLayout;
-    @BindView(R.id.nav_view)
-    NavigationView mNavView;
     @BindView(R.id.fab)
     FloatingActionButton mFab;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
 
     @Inject
     NewsPresenterImpl mNewsPresenter;
@@ -82,6 +71,7 @@ public class SearchNewsActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mSubscription = null;
         mSearchKw = getIntent().getExtras().getString(Constants.SEARCH_KEYWORD);
     }
@@ -99,8 +89,6 @@ public class SearchNewsActivity extends BaseActivity
 
     @Override
     public void initViews() {
-        mBaseNavView = mNavView;
-
         mPresenter = mNewsPresenter;
         mPresenter.attachView(this);
     }

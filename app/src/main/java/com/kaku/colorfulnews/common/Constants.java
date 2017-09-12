@@ -47,4 +47,7 @@ public class Constants {
     public static final String NEWS_LINK = "news_link";
     public static final String NEWS_TITLE = "news_title";
     public static final String SEARCH_KEYWORD = "keyword";
+
+    public static final String SUBSCRIPTION_KEY = "d1e83697b3984230a21104d64a4fcc54";
+    public static final String CONTENT_TYPE = "multipart/form-data";
 }
