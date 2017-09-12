@@ -28,6 +28,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -185,9 +186,9 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
 
     private void setBody(NewsDetail newsDetail, String newsBody) {
         int imgTotal = newsDetail.getImg().size();
+        mNewsDetailBodyTv.setMovementMethod(LinkMovementMethod.getInstance());//加这句才能让里面的超链接生效,实测经常卡机崩溃
         if (isShowBody(newsBody, imgTotal)) {
-//              mNewsDetailBodyTv.setMovementMethod(LinkMovementMethod.getInstance());//加这句才能让里面的超链接生效,实测经常卡机崩溃
-            mNewsDetailBodyTv.setText(newsBody);
+            mNewsDetailBodyTv.setText(Html.fromHtml(newsBody));
         } else {
             mNewsDetailBodyTv.setText(Html.fromHtml(newsBody));
         }
