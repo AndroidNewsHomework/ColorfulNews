@@ -50,6 +50,13 @@ public class NewsDetailPresenterImpl extends BasePresenterImpl<NewsDetailView, N
     public void success(NewsDetail data) {
         super.success(data);
         mView.setNewsDetail(data);
+
+        /*
+        callback.on success url(url)
+
+        interface WYSCallback
+            void on success url(url)
+         */
     }
 
     @Override

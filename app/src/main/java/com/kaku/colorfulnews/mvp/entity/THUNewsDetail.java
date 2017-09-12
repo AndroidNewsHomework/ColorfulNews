@@ -1,5 +1,7 @@
 package com.kaku.colorfulnews.mvp.entity;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,7 @@ import java.util.Map;
 
 public class THUNewsDetail {
 
+    private static final String BAIKE_FMT = "<a href=\"https://baike.baidu.com/item/%s\">%s</a>";
     private String news_Title;
     private String news_Author;
     private String news_Content;
@@ -127,13 +130,30 @@ public class THUNewsDetail {
 
     public NewsDetail toNewsDetail() {
         NewsDetail d = new NewsDetail();
-        d.setBody(news_Content);
+        d.setBody(highlightLOPs(news_Content));
         d.setTitle(news_Title);
         d.setSource(news_URL);
         d.setPtime(news_Time);
         d.setShareLink(news_URL);
         d.setImg(new ArrayList<NewsDetail.ImgBean>());
         return d;
+    }
+
+    private String highlightLOPs(String s) {
+        for (Map<String, Object> pm : locations) {
+            String p = (String) pm.get("word");
+            s = s.replace(p, String.format(BAIKE_FMT, p, p));
+        }
+        for (Map<String, Object> pm : organizations) {
+            String p = (String) pm.get("word");
+            s = s.replace(p, String.format(BAIKE_FMT, p, p));
+        }
+        for (Map<String, Object> pm : persons) {
+            String p = (String) pm.get("word");
+            s = s.replace(p, String.format(BAIKE_FMT, p, p));
+        }
+        Log.e("THUNewsDetail", s);
+        return s;
     }
 }
 

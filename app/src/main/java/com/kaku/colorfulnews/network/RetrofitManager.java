@@ -2,8 +2,10 @@ package com.kaku.colorfulnews.network;
 
 import android.support.annotation.NonNull;
 
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.kaku.colorfulnews.App;
 import com.kaku.colorfulnews.common.ApiConstants;
+import com.kaku.colorfulnews.mvp.entity.ImgSearch;
 import com.kaku.colorfulnews.mvp.entity.THUNewsDetail;
 import com.kaku.colorfulnews.mvp.entity.THUNewsList;
 import com.kaku.colorfulnews.utils.NetUtil;
@@ -26,6 +28,9 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
+import static com.kaku.colorfulnews.common.Constants.CONTENT_TYPE;
+import static com.kaku.colorfulnews.common.Constants.SUBSCRIPTION_KEY;
+
 /**
  * @author 咖枯
  * @version 1.0 2016/5/26
@@ -33,6 +38,7 @@ import rx.Observable;
 public class RetrofitManager {
     private NewsService mNewsService;
 
+    private ImgService mImgService;
     /**
      * 设缓存有效期为两天
      */
@@ -59,6 +65,7 @@ public class RetrofitManager {
                 .client(getOkHttpClient()).addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build();
         mNewsService = retrofit.create(NewsService.class);
+        mImgService = retrofit.create(ImgService.class);
     }
     private OkHttpClient getOkHttpClient() {
         if (sOkHttpClient == null) {
@@ -154,5 +161,9 @@ public class RetrofitManager {
 
     public Observable<ResponseBody> getNewsBodyHtmlPhoto(String photoPath) {
         return mNewsService.getNewsBodyHtmlPhoto(photoPath);
+    }
+
+    public Observable<ImgSearch> getImgObservable(String keyword) {
+        return mImgService.getImg(getCacheControl(), CONTENT_TYPE, SUBSCRIPTION_KEY, keyword);
     }
 }
