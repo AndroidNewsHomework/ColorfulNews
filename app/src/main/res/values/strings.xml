@@ -66,4 +66,6 @@
     <string name="favorite">收藏夹</string>
     <string name="do_favorite">收藏</string>
     <string name="donot_favorite">取消收藏</string>
+    <string name="ban_word">屏蔽词</string>
+    <string name="banword_prompt">用分号分割屏蔽词</string>
 </resources>

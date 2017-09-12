@@ -47,6 +47,7 @@ import com.kaku.colorfulnews.mvp.ui.activities.NewsDetailActivity;
 import com.kaku.colorfulnews.mvp.ui.adapter.NewsListAdapter;
 import com.kaku.colorfulnews.mvp.ui.fragment.base.BaseFragment;
 import com.kaku.colorfulnews.mvp.view.NewsListView;
+import com.kaku.colorfulnews.utils.BanwordNewsDetailFilter;
 import com.kaku.colorfulnews.utils.NetUtil;
 import com.kaku.colorfulnews.utils.RxBus;
 
@@ -193,6 +194,13 @@ public class NewsListFragment extends BaseFragment implements
 
     @Override
     public void setNewsList(List<NewsSummary> newsSummary, @LoadNewsType.checker int loadType) {
+        BanwordNewsDetailFilter bndf = BanwordNewsDetailFilter.getInstance();
+        for (int i = 0; i < newsSummary.size(); i++) {
+            if (bndf.isBanned(newsSummary.get(i))) {
+                newsSummary.remove(i);
+                i--;
+            }
+        }
         switch (loadType) {
             case LoadNewsType.TYPE_REFRESH_SUCCESS:
                 mSwipeRefreshLayout.setRefreshing(false);

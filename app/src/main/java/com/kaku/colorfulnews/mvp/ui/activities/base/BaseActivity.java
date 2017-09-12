@@ -50,6 +50,7 @@ import com.kaku.colorfulnews.mvp.ui.activities.NewsActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.NewsDetailActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.NewsFavoriteActivity;
 import com.kaku.colorfulnews.mvp.ui.activities.SearchNewsActivity;
+import com.kaku.colorfulnews.mvp.ui.fragment.BanwordDialogFragment;
 import com.kaku.colorfulnews.mvp.ui.fragment.KeywordDialogFragment;
 import com.kaku.colorfulnews.utils.MyUtils;
 import com.kaku.colorfulnews.utils.NetUtil;
@@ -226,6 +227,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                             break;
                         case R.id.no_photo_mode:
                             break;
+                        case R.id.ban_word:
+                            BanwordDialogFragment fragment = new BanwordDialogFragment();
+                            fragment.show(getSupportFragmentManager(), BanwordDialogFragment.TAG);
                     }
                     mDrawerLayout.closeDrawer(GravityCompat.START);
                     return false;

@@ -152,7 +152,6 @@ public class THUNewsDetail {
             String p = (String) pm.get("word");
             s = s.replace(p, String.format(BAIKE_FMT, p, p));
         }
-        Log.e("THUNewsDetail", s);
         return s;
     }
 }
