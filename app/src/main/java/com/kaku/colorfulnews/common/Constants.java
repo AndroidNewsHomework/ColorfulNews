@@ -53,4 +53,7 @@ public class Constants {
     public static final String SEARCH_KEYWORD = "keyword";
     public static final String FAVORITE_SAVENAME = "favorite.data";
     public static final String FAVORITE_SAVEDIR = "favorites";
+
+    public static final String SUBSCRIPTION_KEY = "d1e83697b3984230a21104d64a4fcc54";
+    public static final String CONTENT_TYPE = "multipart/form-data";
 }

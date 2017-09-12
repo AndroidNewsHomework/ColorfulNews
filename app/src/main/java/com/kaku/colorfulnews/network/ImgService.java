@@ -16,13 +16,15 @@ import rx.Observable;
  */
 
 public interface ImgService {
-    /** Fix pageSize to 20, compatibility concerns. */
+    /**
+     * Fix pageSize to 20, compatibility concerns.
+     */
     @GET("bing/v5.0/images/search")
     Observable<ImgSearch> getImg(
-        @Header("Cache-Control") String cacheControl,
-        @Header("Content-Type") String contentType,
-        @Header("Ocp-Apim-Subscription-Key") String subscriptionKey,
-        @Query("q") String keyword);
+            @Header("Cache-Control") String cacheControl,
+            @Header("Content-Type") String contentType,
+            @Header("Ocp-Apim-Subscription-Key") String subscriptionKey,
+            @Query("q") String keyword);
 
     /*
     @Url，它允许我们直接传入一个请求的URL。这样以来我们可以将上一个请求的获得的url直接传入进来，baseUrl将被无视
