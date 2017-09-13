@@ -83,6 +83,7 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary> implem
 
     @Override
     public void onSuccess(String s, CallbackBundle cb) {
+        if (MyUtils.isNoPhotoMode()) return;
         try {
             URL url = new URL(s);
             Glide.with(App.getAppContext()).load(s).asBitmap() // gif格式有时会导致整体图片不显示，貌似有冲突
