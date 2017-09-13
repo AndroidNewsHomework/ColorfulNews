@@ -18,8 +18,10 @@ package com.kaku.colorfulnews.mvp.ui.activities;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -58,6 +60,7 @@ import com.socks.library.KLog;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -320,12 +323,25 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
 
     private void share() {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("image/*");
+        intent.setType("text/plain");
+        intent.setComponent(new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI"));
         //ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI");
         //intent.setComponent(comp);
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(getShareImgPath())));
+        mNewsDetailPhotoIv.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(mNewsDetailPhotoIv.getDrawingCache());
+        mNewsDetailPhotoIv.setDrawingCacheEnabled(false);
+            /*        Glide.with(App.getAppContext())
+                    .load("http://seopic.699pic.com/photo/50060/2462.jpg_wh1200.jpg")
+                    .asBitmap()
+                    .centerCrop()
+                    .into(1000, 1000)
+                    .get();*/
+        Uri uriToImage = Uri.parse(MediaStore.Images.Media.insertImage(
+                getContentResolver(), bitmap, "", ""));
+        intent.putExtra(Intent.EXTRA_STREAM, uriToImage);
         intent.putExtra("Kdescription", getShareContents());
         intent.putExtra(Intent.EXTRA_TEXT, getShareContents());
+        intent.putExtra("sms_body", getShareContents());
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
         intent.putExtra(Intent.EXTRA_TITLE, "我是标题");
         startActivity(intent);
