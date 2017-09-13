@@ -323,8 +323,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
 
     private void share() {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        intent.setComponent(new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareImgUI"));
+        intent.setType("image/*");
         //ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI");
         //intent.setComponent(comp);
         mNewsDetailPhotoIv.setDrawingCacheEnabled(true);
