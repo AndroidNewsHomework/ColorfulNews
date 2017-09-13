@@ -136,6 +136,9 @@ public class THUNewsDetail {
         d.setPtime(news_Time);
         d.setShareLink(news_URL);
         d.setImg(new ArrayList<NewsDetail.ImgBean>());
+        // by default kws are sorted
+        for (int i = 0; i < 5 && i < Keywords.size(); i++)
+            d.addKws((String) Keywords.get(i).get("word"));
         return d;
     }
 

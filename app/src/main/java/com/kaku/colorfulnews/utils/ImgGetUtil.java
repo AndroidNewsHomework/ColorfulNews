@@ -6,6 +6,8 @@ import com.jakewharton.rxbinding.support.v7.widget.RecyclerViewChildAttachEvent;
 import com.kaku.colorfulnews.listener.RequestCallBack;
 import com.kaku.colorfulnews.mvp.interactor.GetImgInteractor;
 import com.kaku.colorfulnews.mvp.interactor.impl.GetImgInteractorImpl;
+import com.kaku.colorfulnews.mvp.ui.activities.NewsDetailActivity;
+import com.kaku.colorfulnews.mvp.ui.adapter.NewsListAdapter;
 import com.kaku.colorfulnews.utils.callback.UtilCallback;
 
 import javax.inject.Inject;
@@ -16,17 +18,16 @@ import javax.inject.Inject;
 
 public class ImgGetUtil implements RequestCallBack<String> {
     @Inject
-    public ImgGetUtil(UtilCallback<String, RecyclerView.ViewHolder> cb, String s, RecyclerView.ViewHolder h) {
+    public ImgGetUtil(UtilCallback<String, NewsListAdapter.CallbackBundle> cb, String s, NewsListAdapter.CallbackBundle b) {
         callback = cb;
         keyword = s;
-        holder = h;
+        bun = b;
         new GetImgInteractorImpl().lodeImg(this, keyword);
     }
 
-    UtilCallback<String, RecyclerView.ViewHolder> callback;
+    UtilCallback<String, NewsListAdapter.CallbackBundle> callback;
     String keyword;
-    RecyclerView.ViewHolder holder;
-
+    NewsListAdapter.CallbackBundle bun;
 
     @Override
     public void beforeRequest() {
@@ -35,7 +36,7 @@ public class ImgGetUtil implements RequestCallBack<String> {
 
     @Override
     public void success(String data) {
-        callback.onSuccess(data, holder);
+        callback.onSuccess(data, bun);
     }
 
     @Override

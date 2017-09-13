@@ -35,6 +35,7 @@ import com.kaku.colorfulnews.listener.OnItemClickListener;
 import com.kaku.colorfulnews.mvp.entity.NewsSummary;
 import com.kaku.colorfulnews.mvp.ui.adapter.base.BaseRecyclerViewAdapter;
 import com.kaku.colorfulnews.utils.ImgGetUtil;
+import com.kaku.colorfulnews.utils.MyUtils;
 import com.kaku.colorfulnews.utils.callback.UtilCallback;
 
 import java.net.URL;
@@ -46,21 +47,56 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.http.Url;
 
+import static java.lang.Math.min;
+
 /**
  * @author 咖枯
  * @version 1.0 2016/5/19
  */
-public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary> implements UtilCallback<String, RecyclerView.ViewHolder> {
+public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary> implements UtilCallback<String, NewsListAdapter.CallbackBundle> {
 
+    public class CallbackBundle {
+        private ItemViewHolder holder;
+        private NewsSummary summary;
+
+        public CallbackBundle(ItemViewHolder holder, NewsSummary summary) {
+            this.holder = holder;
+            this.summary = summary;
+        }
+
+        public ItemViewHolder getHolder() {
+            return holder;
+        }
+
+        public void setHolder(ItemViewHolder holder) {
+            this.holder = holder;
+        }
+
+        public NewsSummary getSummary() {
+            return summary;
+        }
+
+        public void setSummary(NewsSummary summary) {
+            this.summary = summary;
+        }
+    }
 
     @Override
-    public void onSuccess(String s, RecyclerView.ViewHolder holder) {
-        Glide.with(App.getAppContext()).load(s).asBitmap() // gif格式有时会导致整体图片不显示，貌似有冲突
-                .format(DecodeFormat.PREFER_ARGB_8888)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.color.image_place_holder)
-                .error(R.drawable.ic_load_fail)
-                .into(((ItemViewHolder) holder).mNewsSummaryPhotoIv);
+    public void onSuccess(String s, CallbackBundle cb) {
+        try {
+            URL url = new URL(s);
+            Glide.with(App.getAppContext()).load(s).asBitmap() // gif格式有时会导致整体图片不显示，貌似有冲突
+                    .format(DecodeFormat.PREFER_ARGB_8888)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.color.image_place_holder)
+                    .error(R.drawable.ic_load_fail)
+                    .into(((ItemViewHolder) cb.holder).mNewsSummaryPhotoIv);
+            cb.summary.setImgsrc(s);
+        } catch (Exception e) {
+            String str = cb.getSummary().getTitle();
+            str = str.substring(0, min(5, str.length()));
+            new ImgGetUtil(this, str, cb);
+        }
     }
 
     public interface OnNewsListItemClickListener extends OnItemClickListener {
@@ -144,14 +180,17 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary> implem
         try {
             final URL url = new URL(newsSummary.getImgsrc());
         } catch(Exception ignored) {
-            new ImgGetUtil(this, "美食", holder);
+            new ImgGetUtil(this, newsSummary.getTitle(), new CallbackBundle(holder, newsSummary));
         }
 
         if (newsSummary.isClicked()) {
             setClicked(holder);
         }
 
-        Glide.with(App.getAppContext()).load(imgSrc).asBitmap() // gif格式有时会导致整体图片不显示，貌似有冲突
+        if (MyUtils.isNoPhotoMode())
+            holder.mNewsSummaryPhotoIv.setImageResource(R.drawable.ic_no_photo);
+        else
+            Glide.with(App.getAppContext()).load(imgSrc).asBitmap() // gif格式有时会导致整体图片不显示，貌似有冲突
                 .format(DecodeFormat.PREFER_ARGB_8888)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.color.image_place_holder)

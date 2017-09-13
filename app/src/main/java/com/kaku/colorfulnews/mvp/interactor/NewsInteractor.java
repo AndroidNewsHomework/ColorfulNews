@@ -25,5 +25,5 @@ import rx.Subscription;
  * @version 1.0 2016/6/2
  */
 public interface NewsInteractor<T> {
-    Subscription lodeNewsChannels(RequestCallBack<T> callback);
+    public Subscription lodeNewsChannels(final RequestCallBack<T> callback);
 }
