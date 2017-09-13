@@ -323,7 +323,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
         intent.setType("image/*");
         //ComponentName comp = new ComponentName("com.tencent.mm", "com.tencent.mm.ui.tools.ShareToTimeLineUI");
         //intent.setComponent(comp);
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File("/storage/emulated/0/Pictures/09.png")));
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(getShareImgPath())));
         intent.putExtra("Kdescription", getShareContents());
         intent.putExtra(Intent.EXTRA_TEXT, getShareContents());
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share));
@@ -337,5 +337,9 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
             mShareLink = "";
         }
         return getString(R.string.share_contents, mNewsTitle, mShareLink);
+    }
+    private String getShareImgPath() {
+        //TODO
+        return null;
     }
 }

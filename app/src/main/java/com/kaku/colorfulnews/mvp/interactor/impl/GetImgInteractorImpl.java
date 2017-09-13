@@ -19,8 +19,7 @@ import rx.functions.Func1;
  */
 
 public class GetImgInteractorImpl implements GetImgInteractor<String> {
-    @Inject
-    GetImgInteractorImpl() {
+    public GetImgInteractorImpl() {
     }
 
     @Override

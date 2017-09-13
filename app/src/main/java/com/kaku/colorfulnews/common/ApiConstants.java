@@ -78,4 +78,8 @@ public class ApiConstants {
     public static String getTHUHost() {
         return "http://166.111.68.66:2042";
     }
+
+    public static String getBingHost() {
+        return "https://api.cognitive.microsoft.com";
+    }
 }

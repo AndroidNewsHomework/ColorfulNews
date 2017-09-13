@@ -65,6 +65,9 @@ public class RetrofitManager {
                 .client(getOkHttpClient()).addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build();
         mNewsService = retrofit.create(NewsService.class);
+        retrofit = new Retrofit.Builder().baseUrl(ApiConstants.getBingHost())
+                .client(getOkHttpClient()).addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build();
         mImgService = retrofit.create(ImgService.class);
     }
     private OkHttpClient getOkHttpClient() {

@@ -80,7 +80,7 @@ public class BriefNewsRaw {
         ns.setLtitle(news_Title);
         ns.setSource(news_URL);
         try {
-            ns.setImgsrc(news_Pictures.split("\\s+")[0]);
+            ns.setImgsrc(news_Pictures.split("(\\s+)|(;\\s*)")[0]);
         } catch (Exception e) {
             ns.setImgsrc("");
         }

@@ -17,6 +17,7 @@
 package com.kaku.colorfulnews.mvp.ui.adapter;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,18 +34,34 @@ import com.kaku.colorfulnews.R;
 import com.kaku.colorfulnews.listener.OnItemClickListener;
 import com.kaku.colorfulnews.mvp.entity.NewsSummary;
 import com.kaku.colorfulnews.mvp.ui.adapter.base.BaseRecyclerViewAdapter;
+import com.kaku.colorfulnews.utils.ImgGetUtil;
+import com.kaku.colorfulnews.utils.callback.UtilCallback;
+
+import java.net.URL;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.http.Url;
 
 /**
  * @author 咖枯
  * @version 1.0 2016/5/19
  */
-public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary> {
+public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary> implements UtilCallback<String, RecyclerView.ViewHolder> {
 
+
+    @Override
+    public void onSuccess(String s, RecyclerView.ViewHolder holder) {
+        Glide.with(App.getAppContext()).load(s).asBitmap() // gif格式有时会导致整体图片不显示，貌似有冲突
+                .format(DecodeFormat.PREFER_ARGB_8888)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.color.image_place_holder)
+                .error(R.drawable.ic_load_fail)
+                .into(((ItemViewHolder) holder).mNewsSummaryPhotoIv);
+    }
 
     public interface OnNewsListItemClickListener extends OnItemClickListener {
         void onItemClick(View view, int position, boolean isPhoto);
@@ -124,6 +141,11 @@ public class NewsListAdapter extends BaseRecyclerViewAdapter<NewsSummary> {
         holder.mNewsSummaryTitleTv.setText(title);
         holder.mNewsSummaryPtimeTv.setText(ptime);
         holder.mNewsSummaryDigestTv.setText(digest);
+        try {
+            final URL url = new URL(newsSummary.getImgsrc());
+        } catch(Exception ignored) {
+            new ImgGetUtil(this, "美食", holder);
+        }
 
         if (newsSummary.isClicked()) {
             setClicked(holder);
