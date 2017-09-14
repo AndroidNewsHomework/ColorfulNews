@@ -7,7 +7,7 @@
               android:clipToPadding="true"
               android:fitsSystemWindows="true"
               android:orientation="vertical"
-              tools:context="com.kaku.colorfulnews.mvp.ui.activities.NewsBrowserActivity">
+    tools:context="com.java.fourteen.mvp.ui.activities.NewsBrowserActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
